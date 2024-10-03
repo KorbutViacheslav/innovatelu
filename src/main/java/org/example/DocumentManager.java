@@ -16,7 +16,6 @@ import java.util.*;
  * This class could be auto tested
  */
 public class DocumentManager {
-    private final Map<String, Document> documentsStorage = new HashMap<>();
 
     /**
      * Implementation of this method should upsert the document to your storage
@@ -26,18 +25,7 @@ public class DocumentManager {
      * @return saved document
      */
     public Document save(Document document) {
-        if (document.getId() == null || document.getId().isEmpty()) {
-            document.setId(UUID.randomUUID().toString());
-            document.setCreated(Instant.now());
-        }
-
-        Document existingDocument = documentsStorage.get(document.getId());
-        if (existingDocument != null) {
-            document.setCreated(existingDocument.getCreated());
-        }
-
-        documentsStorage.put(document.getId(), document);
-        return document;
+        return null;
 
     }
 
@@ -48,45 +36,7 @@ public class DocumentManager {
      * @return list matched documents
      */
     public List<Document> search(SearchRequest request) {
-        if (request == null) {
-            return new ArrayList<>(documentsStorage.values());
-        }
-
-        return documentsStorage.values().stream()
-                .filter(doc -> matchesTitlePrefixes(doc, request.getTitlePrefixes()))
-                .filter(doc -> matchesContainsContents(doc, request.getContainsContents()))
-                .filter(doc -> matchesAuthorIds(doc, request.getAuthorIds()))
-                .filter(doc -> isWithinTimeRange(doc, request.getCreatedFrom(), request.getCreatedTo()))
-                .toList();
-    }
-    private boolean matchesTitlePrefixes(Document doc, List<String> titlePrefixes) {
-        if (titlePrefixes == null || titlePrefixes.isEmpty()) {
-            return true;
-        }
-        return titlePrefixes.stream()
-                .anyMatch(prefix -> doc.getTitle() != null && doc.getTitle().startsWith(prefix));
-    }
-
-    private boolean matchesContainsContents(Document doc, List<String> containsContents) {
-        if (containsContents == null || containsContents.isEmpty()) {
-            return true;
-        }
-        return containsContents.stream()
-                .anyMatch(content -> doc.getContent() != null && doc.getContent().contains(content));
-    }
-
-    private boolean matchesAuthorIds(Document doc, List<String> authorIds) {
-        if (authorIds == null || authorIds.isEmpty()) {
-            return true;
-        }
-        return doc.getAuthor() != null &&
-                authorIds.contains(doc.getAuthor().getId());
-    }
-
-    private boolean isWithinTimeRange(Document doc, Instant createdFrom, Instant createdTo) {
-        if (createdFrom != null && doc.getCreated().isBefore(createdFrom)) return false;
-        if (createdTo != null && doc.getCreated().isAfter(createdTo)) return false;
-        return true;
+        return null;
     }
 
 
@@ -97,7 +47,7 @@ public class DocumentManager {
      * @return optional document
      */
     public Optional<Document> findById(String id) {
-        return Optional.ofNullable(documentsStorage.get(id));
+        return Optional.empty();
     }
 
     @Data
