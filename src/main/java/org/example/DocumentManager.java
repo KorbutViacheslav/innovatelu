@@ -29,14 +29,14 @@ public class DocumentManager {
      * @return saved document
      */
     public Document save(Document document) {
+        Document existingDocument = documentsStorage.get(document.getId());
+        if (existingDocument != null) {
+            return existingDocument;
+        }
+
         if (document.getId() == null || document.getId().isEmpty()) {
             document.setId(UUID.randomUUID().toString());
             document.setCreated(Instant.now());
-        }
-
-        Document existingDocument = documentsStorage.get(document.getId());
-        if (existingDocument != null) {
-            document.setCreated(existingDocument.getCreated());
         }
 
         documentsStorage.put(document.getId(), document);
