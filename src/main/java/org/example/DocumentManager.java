@@ -59,6 +59,7 @@ public class DocumentManager {
                 .filter(doc -> isWithinTimeRange(doc, request.getCreatedFrom(), request.getCreatedTo()))
                 .toList();
     }
+
     private boolean matchesTitlePrefixes(Document doc, List<String> titlePrefixes) {
         if (titlePrefixes == null || titlePrefixes.isEmpty()) {
             return true;
