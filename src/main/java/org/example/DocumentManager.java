@@ -16,6 +16,9 @@ import java.util.*;
  * This class could be auto tested
  */
 public class DocumentManager {
+    /**
+     * Storage where we store documents
+     */
     private final Map<String, Document> documentsStorage = new HashMap<>();
 
     /**
@@ -60,6 +63,14 @@ public class DocumentManager {
                 .toList();
     }
 
+    /**
+     * Checks if the document's title starts with one of the specified prefixes.
+     *
+     * @param doc           - the document being checked.
+     * @param titlePrefixes - a list of prefixes for the document title.
+     * @return true if the prefix list is empty or the document's title starts with one of them.
+     * Otherwise, returns false.
+     */
     private boolean matchesTitlePrefixes(Document doc, List<String> titlePrefixes) {
         if (titlePrefixes == null || titlePrefixes.isEmpty()) {
             return true;
@@ -68,6 +79,13 @@ public class DocumentManager {
                 .anyMatch(prefix -> doc.getTitle() != null && doc.getTitle().startsWith(prefix));
     }
 
+    /**
+     * Checks if the document's content contains any of the specified substrings.
+     *
+     * @param doc              - the document being checked.
+     * @param containsContents - a list of substrings that should be present in the document's content.
+     * @return true if the content contains at least one of the substrings or if the list is empty or null.
+     */
     private boolean matchesContainsContents(Document doc, List<String> containsContents) {
         if (containsContents == null || containsContents.isEmpty()) {
             return true;
@@ -76,6 +94,13 @@ public class DocumentManager {
                 .anyMatch(content -> doc.getContent() != null && doc.getContent().contains(content));
     }
 
+    /**
+     * Checks if the document's author matches one of the specified author IDs.
+     *
+     * @param doc       - the document being checked.
+     * @param authorIds - a list of author IDs.
+     * @return true if the document's author is in the list of author IDs or if the list is empty or null.
+     */
     private boolean matchesAuthorIds(Document doc, List<String> authorIds) {
         if (authorIds == null || authorIds.isEmpty()) {
             return true;
@@ -84,10 +109,20 @@ public class DocumentManager {
                 authorIds.contains(doc.getAuthor().getId());
     }
 
+    /**
+     * Checks if the document was created within the specified time range.
+     *
+     * @param doc         - the document being checked.
+     * @param createdFrom - the start of the time range (inclusive).
+     * @param createdTo   - the end of the time range (inclusive).
+     * @return true if the document was created within the specified range or if both dates are null.
+     */
     private boolean isWithinTimeRange(Document doc, Instant createdFrom, Instant createdTo) {
-        if (createdFrom != null && doc.getCreated().isBefore(createdFrom)) return false;
-        if (createdTo != null && doc.getCreated().isAfter(createdTo)) return false;
-        return true;
+        if (createdFrom != null && doc.getCreated().isBefore(createdFrom))
+            return false;
+        else if (createdTo != null && doc.getCreated().isAfter(createdTo))
+            return false;
+        else return true;
     }
 
 

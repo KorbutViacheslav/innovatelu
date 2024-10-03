@@ -1,14 +1,15 @@
 package org.example;
 
+import org.example.DocumentManager.Author;
+import org.example.DocumentManager.Document;
+import org.example.DocumentManager.SearchRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import org.example.DocumentManager.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,7 +81,7 @@ class DocumentManagerTest {
         documentManager.save(Document.builder().title("XYZ Doc").author(AUTHOR1).build());
 
         SearchRequest request = SearchRequest.builder()
-                .titlePrefixes(Arrays.asList("ABC"))
+                .titlePrefixes(List.of("ABC"))
                 .build();
 
         List<Document> results = documentManager.search(request);
@@ -103,7 +104,7 @@ class DocumentManagerTest {
                 .build());
 
         SearchRequest request = SearchRequest.builder()
-                .containsContents(Arrays.asList("different"))
+                .containsContents(List.of("different"))
                 .build();
 
         List<Document> results = documentManager.search(request);
@@ -118,7 +119,7 @@ class DocumentManagerTest {
         documentManager.save(Document.builder().title("Doc 2").author(AUTHOR2).build());
 
         SearchRequest request = SearchRequest.builder()
-                .authorIds(Arrays.asList(AUTHOR1.getId()))
+                .authorIds(Collections.singletonList(AUTHOR1.getId()))
                 .build();
 
         List<Document> results = documentManager.search(request);
@@ -126,20 +127,6 @@ class DocumentManagerTest {
         assertEquals(1, results.size());
         assertEquals(AUTHOR1, results.get(0).getAuthor());
     }
-
-/*    @Test
-    void search_ByTimeRange() {
-        SearchRequest searchRequest = SearchRequest.builder()
-                .createdFrom(Instant.parse("2023-01-15T00:00:00Z"))
-                .createdTo(Instant.parse("2023-02-15T23:59:59Z"))
-                .build();
-
-        List<DocumentManager.Document> result = documentManager.search(searchRequest);
-
-        assertEquals(1, result.size());
-        assertEquals("Document 2", result.get(0).getTitle());
-
-    }*/
 
     @Test
     void search_CombinedCriteria() {
@@ -163,9 +150,9 @@ class DocumentManagerTest {
                 .build());
 
         SearchRequest request = SearchRequest.builder()
-                .titlePrefixes(Arrays.asList("ABC"))
-                .containsContents(Arrays.asList("different"))
-                .authorIds(Arrays.asList(AUTHOR1.getId()))
+                .titlePrefixes(List.of("ABC"))
+                .containsContents(List.of("different"))
+                .authorIds(Collections.singletonList(AUTHOR1.getId()))
                 .createdFrom(Instant.now().minusSeconds(3600))
                 .build();
 
