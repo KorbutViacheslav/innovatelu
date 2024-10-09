@@ -1,4 +1,4 @@
-# Test task for InnovateIU
+# Test task for InnovatelU
 
 
 * For implement this task focus on clear code, and make this solution as simple readable as possible
